@@ -140,6 +140,32 @@ class UsersDAOTest {
 
     }
 
+    @Test
+    void testExistsByUsernameUserNotFound() {
+        //give
+        String nonExistingUserName = UUID.randomUUID().toString();
+
+        //when
+        boolean exists = usersDAO.exists(nonExistingUserName);
+
+        //then
+        Assertions.assertFalse(exists);
+    }
+
+    @Test
+    void testExistsByUsernameUserExists() {
+        // give
+        String username = UUID.randomUUID().toString();
+        User user = createUser(username);
+        usersDAO.create(user);
+
+        // when
+        boolean exists = usersDAO.exists(username);
+
+        //then
+        Assertions.assertTrue(exists);
+    }
+
 
 
     public User createUser(String username) {

@@ -2,6 +2,7 @@ package com.sda;
 
 
 import com.sda.dao.UsersDAO;
+import com.sda.dto.UserDTO;
 import com.sda.model.User;
 
 import java.util.UUID;
