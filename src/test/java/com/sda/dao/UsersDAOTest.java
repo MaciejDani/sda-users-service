@@ -99,6 +99,49 @@ class UsersDAOTest {
         Assertions.assertIterableEquals(expectedUsers, actualUsers);
     }
 
+    @Test
+    void testFindByUsername() {
+        String username1 = UUID.randomUUID().toString();
+        User expectedUser = createUser(username1);
+
+        usersDAO.create(expectedUser);
+
+        // when
+        User actualUser = usersDAO.findByUsername(username1);
+
+        //then
+        Assertions.assertNotNull(actualUser);
+        Assertions.assertEquals(expectedUser, actualUser);
+    }
+
+    @Test
+    void testUpdateSuccess() {
+        // give
+        String username = UUID.randomUUID().toString();
+        User expectedUser = createUser(username);
+        usersDAO.create(expectedUser);
+        
+        expectedUser.setName("changedName");
+        expectedUser.setEmail("changed_email@gmail.com");
+
+        // when
+        usersDAO.update(expectedUser);
+
+        
+        // then
+        User updatedUser;
+       try (Session session = HibernateUtils.openSession()) {
+           updatedUser = session.find(User.class, username);
+       }
+
+       Assertions.assertNotNull(updatedUser);
+       Assertions.assertEquals(expectedUser, updatedUser);
+
+
+    }
+
+
+
     public User createUser(String username) {
         return User.builder()
                 .username(username)

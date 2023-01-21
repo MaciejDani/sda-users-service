@@ -39,4 +39,18 @@ public class UsersDAO {
         return users;
     }
 
+    public User findByUsername(String username) {
+       try (Session session = HibernateUtils.openSession()) {
+           return session.find(User.class, username);
+       }
+    }
+
+    public void update(User updatedUser) {
+        try (Session session = HibernateUtils.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.merge(updatedUser);
+            transaction.commit();
+        }
+    }
+
 }
